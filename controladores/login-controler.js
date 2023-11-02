@@ -5,7 +5,7 @@ var frmLogin=null;
 import { usuariosServices } from "/servicios/usuarios-servicios.js";
 
 
-document.addEventListener('DOMContentLoaded', () => {
+/* document.addEventListener('DOMContentLoaded', () => {
      
     frmLogin = frmLogin = document.getElementById('frmLogin');
     inputEmail = document.getElementById('loginEmail');
@@ -29,8 +29,35 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById("sitio").classList.add('d-none');
     }
    
-})
+}) */
 
+export function setLogin (){
+    frmLogin = frmLogin = document.getElementById('frmLogin'); 
+    const btnLogout = document.getElementById('btnLogout');
+    btnLogout.addEventListener('click', logout);
+    
+    if (getUsuarioAutenticado()){
+
+        frmLogin.outerHTML= '';
+        
+    }else{
+        document.getElementById("sitio").classList.add('d-none');
+        
+        inputEmail = document.getElementById('loginEmail');
+  
+        inputPassword = document.getElementById('loginPassword');
+        
+        const btnLogin = document.getElementById('iniciar-sesion');
+    
+        inputEmail.addEventListener('blur', validarForm);
+        inputPassword.addEventListener('blur', validarForm);
+
+        btnLogin.addEventListener('click', usuarioExiste);
+
+       
+    }
+   
+}
 
 async function usuarioExiste() {
 
