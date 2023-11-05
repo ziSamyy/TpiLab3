@@ -274,7 +274,7 @@ var txtDireccion='';
 var txtTelefono='';
 var idUsuario;
 
-export async function newUsuario(){
+export async function newRegister(){
     let d = document;
     
     d.querySelector('.contenidoTitulo').innerHTML = 'Agregar Usuario';
@@ -285,7 +285,7 @@ export async function newUsuario(){
     formulario.addEventListener("submit", guardar);
 }
 
-export async function editUsuario(id){
+export async function editRegister(id){
     let d = document;
     idUsuario = id;
     d.querySelector('.contenidoTitulo').innerHTML = 'Editar Usuario';
@@ -294,7 +294,7 @@ export async function editUsuario(id){
 
     formulario = d.querySelector(".frmAmUsuario")
     formulario.addEventListener("submit", modificar);
-    let usuario =  await usuariosServices.listaUsuarios(id);
+    let usuario =  await usuariosServices.listar(id);
 
     
     txtNombre.value= usuario.nombre;
@@ -339,7 +339,7 @@ function guardar(e) {
     e.preventDefault();
    
     var pais = selPais.options[selPais.selectedIndex];
-    usuariosServices.crearUsuario(txtApellido.value, txtNombre.value, txtCorreo.value, txtPass.value, fileAvatar.src , 
+    usuariosServices.crear(txtApellido.value, txtNombre.value, txtCorreo.value, txtPass.value, fileAvatar.src , 
         pais.value, txtCiudad.value, txtDireccion.value, txtTelefono.value)
         .then(respuesta => {
 
@@ -356,7 +356,7 @@ function modificar(e) {
     e.preventDefault();
    
     var pais = selPais.options[selPais.selectedIndex];
-    usuariosServices.editarUsuario(idUsuario, txtApellido.value, txtNombre.value, txtCorreo.value, txtPass.value, fileAvatar.src , 
+    usuariosServices.editar(idUsuario, txtApellido.value, txtNombre.value, txtCorreo.value, txtPass.value, fileAvatar.src , 
         pais.value, txtCiudad.value, txtDireccion.value, txtTelefono.value)
         .then(respuesta => {
 

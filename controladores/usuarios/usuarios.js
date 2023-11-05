@@ -1,6 +1,6 @@
 import { usuariosServices } from "../../servicios/usuarios-servicios.js";
-import { newUsuario } from "./new.js";
-import { editUsuario } from "./new.js";
+import { newRegister } from "./new.js";
+import { editRegister } from "./new.js";
 
 
 
@@ -41,7 +41,7 @@ export async function Usuarios(){
     d.querySelector('.rutaMenu').setAttribute('href',"#/usuarios");
     let cP =d.getElementById('contenidoPrincipal');
     
-    res = await usuariosServices.listaUsuarios();
+    res = await usuariosServices.listar();
     res.forEach(element => {
       element.action = "<div class='btn-group'><a class='btn btn-warning btn-sm mr-1 rounded-circle btnEditarUsuario'  href='#/editUsuario' data-idUsuario='"+ element.id +"'> <i class='fas fa-pencil-alt'></i></a><a class='btn btn-danger btn-sm rounded-circle removeItem btnBorrarUsuario'href='#/delUsuario' data-idUsuario='"+ element.id +"'><i class='fas fa-trash'></i></a></div>";
     });  
@@ -63,12 +63,12 @@ export async function Usuarios(){
 }
 
 function agregar(){
-    newUsuario();
+    newRegister();
 
 }
 function editar(){
    let id = this.getAttribute('data-idUsuario') ;
-   editUsuario(id);
+   editRegister(id);
     
 }
 
@@ -92,7 +92,7 @@ async function borrar(){
         }
       })
       if (borrar === 1)
-            await usuariosServices.borrarUsuario(id); 
+            await usuariosServices.borrar(id); 
       window.location.href = "#/usuarios";  
 }
 
