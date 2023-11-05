@@ -1,7 +1,8 @@
 const url = "https://65418746f0b8287df1fe755a.mockapi.io/api/TpiLab3/usuarios";
 
+//API-REST USUARIOS//
 
-async function listaUsuarios(id) {
+async function listar(id) {
     let cadUrl;
     if(isNaN(id))
       cadUrl= url;
@@ -11,7 +12,7 @@ async function listaUsuarios(id) {
         .then(respuesta => respuesta.json());
 }
 
-async function crearUsuario(apellido, nombre, correo, password, avatar, pais, ciudad, direccion, telefono) {
+async function crear(apellido, nombre, correo, password, avatar, pais, ciudad, direccion, telefono) {
 
     return await fetch(url, {
         method: 'POST',
@@ -32,7 +33,7 @@ async function crearUsuario(apellido, nombre, correo, password, avatar, pais, ci
     })
 }
 
-async function editarUsuario(id, apellido, nombre, correo, password, avatar, pais, ciudad, direccion, telefono) {
+async function editar(id, apellido, nombre, correo, password, avatar, pais, ciudad, direccion, telefono) {
 
     let urlPut = url + "/" + id;
     return await fetch(urlPut, {
@@ -54,7 +55,7 @@ async function editarUsuario(id, apellido, nombre, correo, password, avatar, pai
     })
 }
 
-async function borrarUsuario(id){
+async function borrar(id){
   
     let urlPut = url + "/" + id;
     return await fetch(urlPut, {
@@ -63,8 +64,8 @@ async function borrarUsuario(id){
 }
 
 export const usuariosServices = {
-    listaUsuarios,
-    crearUsuario,
-    editarUsuario,
-    borrarUsuario
+    listar,
+    crear,
+    editar,
+    borrar
 }
