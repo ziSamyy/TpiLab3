@@ -37,8 +37,8 @@ export function setLogin (){
     btnLogout.addEventListener('click', logout);
     
     if (getUsuarioAutenticado()){
-
-        frmLogin.outerHTML= '';
+        if (frmLogin)
+            frmLogin.outerHTML= '';
         
     }else{
         document.getElementById("sitio").classList.add('d-none');
