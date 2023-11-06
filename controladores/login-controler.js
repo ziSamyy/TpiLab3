@@ -64,7 +64,7 @@ async function usuarioExiste() {
     let existeUsuario;
     const spinner = document.querySelector('#spinner');
 
-    await usuariosServices.listaUsuarios()
+    await usuariosServices.listar()
         .then(respuesta => {
             respuesta.forEach(usuario => {
                 
@@ -84,6 +84,7 @@ async function usuarioExiste() {
         frmLogin.outerHTML= '';
         document.getElementById("sitio").classList.remove('d-none');
         setUsuarioAutenticado(true); 
+        window.location.href = "#/home" ;
     }
 }
 
