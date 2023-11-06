@@ -64,7 +64,7 @@ async function usuarioExiste() {
     let existeUsuario;
     const spinner = document.querySelector('#spinner');
 
-    await usuariosServices.listar()
+    await usuariosServices.listar( )
         .then(respuesta => {
             respuesta.forEach(usuario => {
                 
