@@ -1,17 +1,17 @@
 <div class="imagen">
-    <img src="/img/productos/celulares/motorola.png" alt="producto">
+    <img src="${imagen}" alt="producto">
 </div>
 <div class="texto">
-    <p id="nameProducto">Motorola G32</p>
+    <p id="nameProducto" data-idProducto=${id}>${nombre}</p>
 
-    <p id="descripcionProducto">Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae aspernatur aliquid culpa, pariatur sit accusamus doloribus, enim tempore dolorum voluptatem eius reiciendis animi ut, dicta distinctio molestias amet porro ducimus!</p>
+    <p id="descripcionProducto">${descripcion}</p>
 
-    <p id="precioProducto">$ 123131</p>
+    <p id="precioProducto">${precio}</p>
 
     <div class="form-group">
         <label for="cantidadProducto">Cantidad</label>
         <input type="number" step="1" min ="1" value="1" id="cantidadProducto">
     </div>
-    
-    <a id="btnComprar" href="#comprar">Comprar</a>
+
+    <a id="btnComprar" >Comprar</a>
 </div>

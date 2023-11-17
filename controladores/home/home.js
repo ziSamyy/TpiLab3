@@ -90,7 +90,7 @@ export async function Home(){
     res= await ventasServices.listar();
     indVentas.innerHTML = res.length;
 
-    //CANTIDAD DE VENTAS SIN DESPACHAR
+    //CANTIDAD DE VENTAS SIN DESPACHAR (los valores que espera para el campo despachado son true y false)
     res= await ventasServices.listarVentasDespachadas(false) ;
     indSinDespachar.innerHTML = res.length;
 
