@@ -2,6 +2,7 @@ import { usuariosServices } from "../../servicios/usuarios-servicios.js";
 import { newRegister } from "./new.js";
 import { editRegister } from "./new.js";
 
+var dtable;
 
 
 const htmlUsuarios = 
@@ -34,7 +35,7 @@ const htmlUsuarios =
 </div> `; 
 
 export async function Usuarios(){
-    let d = document
+    let d = document;
     let res='';
     d.querySelector('.contenidoTitulo').innerHTML = 'Usuarios';
     d.querySelector('.contenidoTituloSec').innerHTML = '';
@@ -45,23 +46,35 @@ export async function Usuarios(){
     res = await usuariosServices.listar();
     res.forEach(element => {
       element.action = "<div class='btn-group'><a class='btn btn-warning btn-sm mr-1 rounded-circle btnEditarUsuario'  href='#/editUsuario' data-idUsuario='"+ element.id +"'> <i class='fas fa-pencil-alt'></i></a><a class='btn btn-danger btn-sm rounded-circle removeItem btnBorrarUsuario'href='#/delUsuario' data-idUsuario='"+ element.id +"'><i class='fas fa-trash'></i></a></div>";
+      
     });  
      
     cP.innerHTML =  htmlUsuarios;
  
     llenarTabla(res);
 
+  
+
     let btnAgregar = d.querySelector(".btnAgregarUsuario");
-    let btnEditar = d.querySelectorAll(".btnEditarUsuario");
-    let btnBorrar = d.querySelectorAll(".btnBorrarUsuario");
+    
 
     btnAgregar.addEventListener("click", agregar);
+   
+     
+
+}
+
+function enlazarEventos( oSettings){
+    let d = document;
+    let btnEditar = d.querySelectorAll(".btnEditarUsuario");
+    let btnBorrar = d.querySelectorAll(".btnBorrarUsuario");
     for(let i=0 ; i< btnEditar.length ; i++){
         btnEditar[i].addEventListener("click", editar);
         btnBorrar[i].addEventListener("click", borrar);
-      }
+    } 
 
 }
+
 
 function agregar(){
     newRegister();
@@ -100,7 +113,7 @@ async function borrar(){
 function llenarTabla(res){ 
    
 
-    new DataTable('#usuariosTable', {
+  dtable =  new DataTable('#usuariosTable', {
         responsive:true,
         data : res,
         columns: [
@@ -112,6 +125,8 @@ function llenarTabla(res){
             { data: 'action', "orderable":false }
             
         ],
+        fnDrawCallback: function ( oSettings) {
+            enlazarEventos( oSettings); },
         deferRender: true,
         retrive: true,
         processing: true,

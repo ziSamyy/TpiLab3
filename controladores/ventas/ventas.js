@@ -52,15 +52,7 @@ export async function Ventas(){
     llenarTabla(res);
 
    
-    let chkBoxDespachado = d.querySelectorAll(".ckboxDespachado");
-    
-
-    
-    for(let i=0 ; i< chkBoxDespachado.length ; i++){
-        chkBoxDespachado[i].addEventListener("change", chkBoxChange);
-        
-      }
-
+   
 }
 
 
@@ -71,6 +63,15 @@ function chkBoxChange(event){
     
 }
 
+function enlazarEventos( oSettings){
+    let d = document;
+    let chkBoxDespachado = d.querySelectorAll(".ckboxDespachado");
+    
+    for(let i=0 ; i< chkBoxDespachado.length ; i++){
+        chkBoxDespachado[i].addEventListener("change", chkBoxChange);
+        
+      }
+}
 
 function llenarTabla(res){ 
    
@@ -87,6 +88,8 @@ function llenarTabla(res){
             { data: 'action', "orderable":false }
             
         ],
+        fnDrawCallback: function ( oSettings) {
+            enlazarEventos( oSettings); },
         deferRender: true,
         retrive: true,
         processing: true,

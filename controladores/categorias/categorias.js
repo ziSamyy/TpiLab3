@@ -49,14 +49,25 @@ export async function Categorias(){
     llenarTabla(res);
 
     let btnAgregar = d.querySelector(".btnAgregarCategoria");
-    let btnEditar = d.querySelectorAll(".btnEditarCategoria");
-    let btnBorrar = d.querySelectorAll(".btnBorrarCategoria");
+   
 
     btnAgregar.addEventListener("click", agregar);
     for(let i=0 ; i< btnEditar.length ; i++){
         btnEditar[i].addEventListener("click", editar);
         btnBorrar[i].addEventListener("click", borrar);
       }
+
+}
+
+function enlazarEventos( oSettings){
+    let d = document;
+    let btnEditar = d.querySelectorAll(".btnEditarCategoria");
+    let btnBorrar = d.querySelectorAll(".btnBorrarCategoria");
+
+    for(let i=0 ; i< btnEditar.length ; i++){
+        btnEditar[i].addEventListener("click", editar);
+        btnBorrar[i].addEventListener("click", borrar);
+    }    
 
 }
 
@@ -106,6 +117,8 @@ function llenarTabla(res){
             { data: 'action', "orderable":false }
             
         ],
+        fnDrawCallback: function ( oSettings) {
+            enlazarEventos( oSettings); },
         deferRender: true,
         retrive: true,
         processing: true,
