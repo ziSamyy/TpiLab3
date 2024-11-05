@@ -6,7 +6,7 @@ import { usuariosServices } from "/servicios/usuarios-servicios.js";
 
 
 export function setLogin (){
-    frmLogin = frmLogin = document.getElementById('frmLogin'); 
+    frmLogin = document.getElementById('frmLogin'); 
     const btnLogout = document.getElementById('btnLogout');
     btnLogout.addEventListener('click', logout);
     
