@@ -24,6 +24,7 @@ const htmlCarrusel =
 `
 
 
+
 let slideIndex = 1;
 export async function Carrusel(){
     let d = document
@@ -42,7 +43,6 @@ export async function Carrusel(){
     buttonNext.addEventListener('click', prevSlide);
 
     dot1.addEventListener('click', () => currentSlide(1));
-
     dot2.addEventListener('click', () => currentSlide(2));
     dot3.addEventListener('click', () => currentSlide(3));
 
