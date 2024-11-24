@@ -4,16 +4,53 @@ import { ventasServices } from "../../../servicios/ventas-servicios.js";
 import { getUsuarioAutenticado } from "../login/login.js";
 
 export async function vistaProducto(){
-    /**1-En esta función se deben capturar los elementos html: .carrusel, .seccionProducto, .seccionLogin. Para luego 
-     * blanquear su contenido. 
-     * 2-Se deberá capturar el elemento .vistaProducto.
-     * 3-Se deberá llamar a la función leerParametro para recuperar de la url el idProducto. 
-     * 4-Luego se deberán leer los datos del producto indentificado con el idProducto recuperado.
-     * 5-Llamar a la función htmlVistaProducto.
-     * 6-El resultado de la función deberá asignarse al elemento .vistaProducto capturado previamente.
-     * 7-Se deberá capturar el elemento html correspondiente al anchor btnComprar y enlazar el evento click a la función registrarCompra.  
-    */
-   
+    // 1. Capturar los elementos HTML y blanquear su contenido
+    const carrusel = document.querySelector(".carrusel");
+    const seccionProducto = document.querySelector(".seccionProducto");
+    const seccionLogin = document.querySelector(".seccionLogin");
+    const vistaProducto = document.querySelector(".vistaProducto");
+
+    carrusel.innerHTML = '';
+    seccionProducto.innerHTML = '';
+    seccionLogin.innerHTML = '';
+    
+    // 2. Capturar el elemento .vistaProducto
+    vistaProducto.innerHTML = '';
+    
+    // 3. Recuperar el idProducto desde la URL
+    const idProducto = leerParametro();
+    if (!idProducto) {
+        vistaProducto.innerHTML = "<p>Error: No se encontró el producto.</p>";
+        return;
+    }
+    
+    try {
+        // 4. Leer los datos del producto desde la API
+        const producto = await productosServices.listar(idProducto);
+        if (!producto) {
+            vistaProducto.innerHTML = "<p>Error: Producto no encontrado.</p>";
+            return;
+        }
+
+        // 5. Generar el HTML con htmlVistaProducto
+        const productoHTML = htmlVistaProducto(
+            producto.id,
+            producto.nombre,
+            producto.descripcion,
+            producto.precio,
+            producto.foto
+        );
+
+        // 6. Asignar el HTML generado al elemento .vistaProducto
+        vistaProducto.innerHTML = productoHTML;
+
+        // 7. Capturar el elemento btnComprar y enlazar el evento click a registrarCompra
+        const btnComprar = document.querySelector("#btnComprar");
+        btnComprar.addEventListener("click", registrarCompra);
+    } catch (error) {
+        console.error("Error al cargar el producto:", error);
+        vistaProducto.innerHTML = "<p>Error al cargar el producto.</p>";
+    }
 }
 
 function htmlVistaProducto(id, nombre, descripcion, precio, imagen) {
@@ -27,14 +64,22 @@ function htmlVistaProducto(id, nombre, descripcion, precio, imagen) {
      *   let cadena = `Hola, ${titulo} Claudia  en que podemos ayudarla`;
      *   
     */
+    return `
+    <div class="producto-detalle">
+        <img src="${imagen}" alt="Imagen del producto ${nombre}" class="producto-imagen">
+        <h2 id="nameProducto">${nombre}</h2>
+        <p>${descripcion}</p>
+        <p><strong>Precio:</strong> $${precio}</p>
+        <button id="btnComprar" data-idproducto="${id}">Comprar</button>
+    </div>
+`;
     
 }
 function leerParametro(){
     // Captura el idProducto de la dirección URL enviada por la página que llama
-    const words = new URLSearchParams(window.location.search);
-    let cad = words.get("idProducto");
-    if (!cad) return null;
-    return cad.trim();
+    const urlParams = new URLSearchParams(window.location.search);
+    const idProducto = urlParams.get("idProducto");
+    return idProducto ? idProducto.trim() : null;
 }
 
 
@@ -57,6 +102,32 @@ function registrarCompra(){
      * 10-Finalmente emitimos una alerta con la leyenda "Compra finalizada."
      *     
      */
-    
+    // 1. Recuperar los datos del usuario autenticado
+    const usuario = getUsuarioAutenticado();
+    if (!usuario.autenticado) {
+        alert("Debe iniciar sesión antes de realizar una compra.");
+        return;
+    }
+
+    // 2. Capturar los datos necesarios del producto y la compra
+    const idUsuario = usuario.idUsuario;
+    const emailUsuario = usuario.email;
+    const idProducto = document.querySelector("#btnComprar").getAttribute("data-idproducto");
+    const nameProducto = document.querySelector("#nameProducto").textContent;
+    const cantidad = 1; // Asumimos cantidad fija para esta implementación
+    const fecha = new Date().toISOString();
+    const despachado = false;
+
+    // 3. Registrar la venta en la API
+    ventasServices.crear(idUsuario, emailUsuario, idProducto, nameProducto, cantidad, fecha, despachado)
+        .then(() => {
+            // 4. Redirigir al usuario a la tienda y mostrar un mensaje de éxito
+            alert("Compra finalizada.");
+            location.replace("tienda.html");
+        })
+        .catch(error => {
+            console.error("Error al registrar la compra:", error);
+            alert("Hubo un error al procesar la compra. Inténtelo nuevamente.");
+        });
     
 }
