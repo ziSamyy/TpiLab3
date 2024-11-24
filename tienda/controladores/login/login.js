@@ -2,17 +2,29 @@
 import { usuariosServices } from "../../../servicios/usuarios-servicios.js";
 
 /**1- Se debe asignar a la siguiente constante todo el código correspondiente al componente de login (/asset/modulos/login.html)  */
-const htmlLogin=
-`
-    ASIGNAR EL COMPONENTE CORRESPONDIENTE!!!!
+const htmlLogin = `
+    <div class="login-container">
+        <form class="formLogin">
+            <label for="loginEmail">Email:</label>
+            <input type="email" id="loginEmail" required>
+            
+            <label for="loginPassword">Contraseña:</label>
+            <input type="password" id="loginPassword" required>
+            
+            <label for="reLoginPassword" id="reLoginPasswordLabel" style="display: none;">Repetir Contraseña:</label>
+            <input type="password" id="reLoginPassword" style="display: none;">
+            
+            <button type="submit">Ingresar</button>
+        </form>
+    </div>
 `;
 /*2-Se deben definir 4 variables globales al módulo, una para el formulario html, y otras tres para los inputs de email, contraseña y 
 *   repetir contraseña
 */
-var formulario;
-var inputEmail;
-var inputPassword;
-var inputRepetirPass;
+let formulario;
+let inputEmail;
+let inputPassword;
+let inputRepetirPass;
 
 
 
@@ -20,7 +32,8 @@ export async function login(){
     /** 3- Esta función se encarga de llamar a la función crearFormulario y de enlazar el evento submit del formulario de login
      * 
     */
-    
+    crearFormulario(false);
+    formulario.addEventListener('submit', ingresar);
 }  
 
 export async function register(){
@@ -30,7 +43,8 @@ export async function register(){
       *     Por último enlaza el evento submit del formulario a la función registrarUsuario.
      * 
     */
-   
+   crearFormulario(true);
+   formulario.addEventListener('submit', registrarUsuario);
 }  
 
 
@@ -48,7 +62,24 @@ function crearFormulario(registrar){
      *    el input reLoginPassword se mostrará en pantalla.
      * 7- Por último se deberá capturar el formulario indentificado con la clase .formLogin y asignarlo a la variable global formulario.
      */
-    
+    let carruselElement = document.querySelector('.carrusel');
+    carruselElement.innerHTML = '';
+
+    let seccionLoginElement = document.querySelector('.seccionLogin');
+    seccionLoginElement.innerHTML = htmlLogin;
+
+    inputEmail = document.getElementById('loginEmail');
+    inputPassword = document.getElementById('loginPassword');
+    inputRepetirPass = document.getElementById('reLoginPassword');
+
+    if (!registrar) {
+        inputRepetirPass.value = '';
+    } else {
+        inputRepetirPass.style.display = 'block';
+        document.getElementById('reLoginPasswordLabel').style.display = 'block';
+    }
+
+    formulario = document.querySelector('.formLogin');
 } 
 
 async function  ingresar(e){
@@ -65,44 +96,73 @@ async function  ingresar(e){
      *     b- Llamar a la función mostrarUsuario, pasandole como parámetro el texto del email de la cuenta.  
      * 5- En el caso de que el usuario no sea válido se deberá mostrar una alerta con el texto 'Email o contraseña incorrecto, intenta nuevamente'.
      */
-   
-
+    e.preventDefault();
+    const usuarioId = await usuarioExiste();
+    if (usuarioId) {
+        // Si el usuario es válido
+        setUsuarioAutenticado(true, usuarioId);
+        mostrarUsuario(inputEmail.value);
+    } else {
+        // Si el usuario no es válido
+        mostrarMensaje('Email o contraseña incorrecto, intenta nuevamente');
+    }
 }
 
-async function  registrarUsuario(e){
-    /**
-     * 1- Esta función tiene como objetivo controlar que el texto en inputPassword sea exactamente igual al texto ingresado en
-     *    inputRepetirPass y luego registrar la cuenta en el REST-API.
-     * 2- Para ello en primera instancia deberá cancelar el comportamiento por defecto del envento recibido . Para ello deberá
-     *    tomar el parámetro evento ( e ) y ejecutar el método preventDefault().
-     * 3- Luego se comparará con una estructura de decisión si los textos ingresados en los controles mencionados son exactamente iguales.
-     * 4- En caso afirmativo utilizando usuariosServices mediante el método crear, dará de alta el nuevo usuario.
-     * 5- Deberá mostrar una alerta con la leyenda "Email registrado" y cambiará el valor del objeto window.location.href a "#login", para que
-     *    se muestre la pantalla de login. 
-     * 5- En caso negativo o falso mostrará una alerta indicando que las contraseñas ingresadas no son iguales.  
-     */
-   
-    
+async function registrarUsuario(e) {
+    // Cancels the default behavior of the event
+    e.preventDefault();
+
+    // Checks if the passwords match
+    if (inputPassword.value === inputRepetirPass.value) {
+        // Registers the new user in the REST-API
+        await usuariosServices.crear(
+            '', // apellido
+            '', // nombre
+            inputEmail.value, // correo
+            inputPassword.value, // password
+            '', // avatar
+            '', // pais
+            '', // ciudad
+            '', // direccion
+            ''  // telefono
+        );
+
+        // Shows a success alert
+        mostrarMensaje('Email registrado');
+
+        // Redirects to the login screen
+        window.location.href = '#login';
+    } else {
+        // Shows an error alert
+        mostrarMensaje('Las contraseñas ingresadas no son iguales');
+    }
 }
 async function usuarioExiste() {
-    /**
-     * 1- El objetivo de esta función es consultar la lista de usuarios con la función usuariosServices.listar() y mediante
-     *    un bucle comparar el email y la contraseña ingresado por el usuario en inputEmail e inputPassword con los previamente
-     *    almacenados dentro del API-REST sobre el recuros usuarios.
-     * 2- Si el email y la contraseña son válidos devuelve el id de usuario.
-     * 3- Si el email y la contraseña no son válido devuelve falso.    
-     */
-    
+    // Get the list of users from the REST-API
+    const usuarios = await usuariosServices.listar();
+
+    // Loop through the list of users
+    for (let usuario of usuarios) {
+        // Compare the email and password entered by the user with those stored in the REST-API
+        if (usuario.correo === inputEmail.value && usuario.password === inputPassword.value) {
+            // If the email and password are valid, return the user ID
+            return usuario.id;
+        }
+    }
+
+    // If the email and password are not valid, return false
+    return false;
 }
 
-export function mostrarUsuario(email){
-    /**
-     * 1- Esta función deberá capturar del dom la clase .btnLogin y asignarle el texto existente en el parámetro email.
-     * 2- Deberá capturar del dom la clase .btnRegister y asignarle el texto "Logout" y a este elemento asignarle el valor
-     *    "#logout" sobre el atributo href.
-     **/
-    
+export function mostrarUsuario(email) {
+    // Capture the element with the class .btnLogin and assign the email text to it
+    const btnLogin = document.querySelector('.btnLogin');
+    btnLogin.textContent = email;
 
+    // Capture the element with the class .btnRegister, assign the text "Logout" and set the href attribute to "#logout"
+    const btnRegister = document.querySelector('.btnRegister');
+    btnRegister.textContent = 'Logout';
+    btnRegister.setAttribute('href', '#logout');
 }
 
 function mostrarMensaje(msj) {
@@ -113,21 +173,23 @@ function mostrarMensaje(msj) {
 }
 
 export function setUsuarioAutenticado(booleano, idUsuario) {
-    /**
-     * 1- Esta función deberá registar en el sessionStorage tres valores: autenticado, idUsuario y email.
-     * 2- Los valores de los mismos serán tomados de los dos parámetros recibidos y el email será tomado desde la variable
-     *    inputEmail.
-     */
-    
-
-
+    // Register the values in the sessionStorage
+    sessionStorage.setItem('autenticado', booleano);
+    sessionStorage.setItem('idUsuario', idUsuario);
 }
 export function getUsuarioAutenticado() {
-    /**
-     * 1- Esta función debera leer los valores almacenados en el sessionStorage y construir un objeto con los valores
-     * autenticado, idUsuario y email.
-     * 2- Luego los devolverá como resultado.
-     */
-    
-       
+    // Read the values stored in the sessionStorage
+    const autenticado = sessionStorage.getItem('autenticado');
+    const idUsuario = sessionStorage.getItem('idUsuario');
+    const email = sessionStorage.getItem('email');
+
+    // Construct an object with the values
+    const usuario2 = {
+        autenticado: autenticado === 'true', // Convert to boolean
+        idUsuario: idUsuario,
+        email: email
+    };
+
+    // Return the object
+    return usuario2;
 }
