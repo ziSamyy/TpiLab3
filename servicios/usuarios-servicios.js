@@ -1,4 +1,4 @@
-const url = "https://65418746f0b8287df1fe755a.mockapi.io/api/TpiLab3/usuarios";
+const url = "https://67450840b4e2e04abea4760a.mockapi.io/api2/Usuarios";
 
 //API-REST USUARIOS//
 

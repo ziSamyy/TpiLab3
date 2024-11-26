@@ -45,7 +45,7 @@ async function usuarioExiste() {
         .then(respuesta => {
             respuesta.forEach(usuario => {
                 
-                if (usuario.correo === inputEmail.value && usuario.password === inputPassword.value) {
+                if (usuario.correo == inputEmail.value && usuario.password == inputPassword.value) {
                     usuarioId = usuario.id;
                     usuarioActivo = usuario.nombre + ' ' + usuario.apellido;
                     usuarioFoto = usuario.avatar;

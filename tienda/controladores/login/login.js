@@ -3,20 +3,41 @@ import { usuariosServices } from "../../../servicios/usuarios-servicios.js";
 
 /**1- Se debe asignar a la siguiente constante todo el código correspondiente al componente de login (/asset/modulos/login.html)  */
 const htmlLogin = `
-    <div class="login-container">
-        <form class="formLogin">
-            <label for="loginEmail">Email:</label>
-            <input type="email" id="loginEmail" required>
+<div class="contenedorLogin">
+    <div class="cajaLogin">
+        <p >Iniciar sesión</p>
+
+        <form  class="formLogin" >
+
+            <div class="input-group">
+                
+                <input type="email" class="form-control" id="loginEmail" placeholder="Email" name="loginEmail" autocomplete required>
+                
+            </div>
+
+            <div class="input-group">
+                
+                <input type="password" class="form-control" id="loginPassword" placeholder="Password" name="loginPassword" autocomplete required>
             
-            <label for="loginPassword">Contraseña:</label>
-            <input type="password" id="loginPassword" required>
+            </div>
+
+            <div class="input-group">
+                
+                <input type="password" class="form-control" id="reLoginPassword" placeholder="Repetir Password" name="reLoginPassword"  required>
             
-            <label for="reLoginPassword" id="reLoginPasswordLabel" style="display: none;">Repetir Contraseña:</label>
-            <input type="password" id="reLoginPassword" style="display: none;">
-            
-            <button type="submit">Ingresar</button>
+            </div>
+                        
+            <div class="row">
+                                
+                <div class="col-4">
+                <button type="submit"  id="iniciar-sesion" class="btnAmarillo">Login</button>
+                </div>
+                    
+            </div>
         </form>
+            
     </div>
+</div>
 `;
 /*2-Se deben definir 4 variables globales al módulo, una para el formulario html, y otras tres para los inputs de email, contraseña y 
 *   repetir contraseña
@@ -74,6 +95,7 @@ function crearFormulario(registrar){
 
     if (!registrar) {
         inputRepetirPass.value = '';
+        inputRepetirPass.outerHTML = '';
     } else {
         inputRepetirPass.style.display = 'block';
         document.getElementById('reLoginPasswordLabel').style.display = 'block';
@@ -102,6 +124,7 @@ async function  ingresar(e){
         // Si el usuario es válido
         setUsuarioAutenticado(true, usuarioId);
         mostrarUsuario(inputEmail.value);
+        window.location.href="#"
     } else {
         // Si el usuario no es válido
         mostrarMensaje('Email o contraseña incorrecto, intenta nuevamente');
