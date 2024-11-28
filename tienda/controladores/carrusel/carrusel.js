@@ -30,7 +30,7 @@ const htmlCarrusel =
                 </div>
                 <div class="itemCarrousel" id="itemCarrousel-3">
                     <div class="itemCarrouselTarjeta">
-                        <img src="/img/slider/Black Minimal Motivation Quote LinkedIn Banner(2).png alt="">
+                        <img src="/img/slider/Black Minimal Motivation Quote LinkedIn Banner(2).png" alt="">
                     </div>
                     <div class="itemCarrouselArrows">
                         <a href="#itemCarrousel-2">

@@ -36,7 +36,15 @@ export async function vistaProducto() {
     vistaProducto.innerHTML = htmlProducto;
 
     const btnComprar = document.getElementById("btnComprar");
-    btnComprar.addEventListener("click", registrarCompra);
+    btnComprar.addEventListener("click", () => { 
+      registrarCompra(); 
+      Swal.fire({ 
+        title: 'Gracias!', 
+        text: 'Compra finalizada', 
+        icon: 'success', 
+        confirmButtonText: 'Aceptar' 
+      });
+    });
   }
 }
 
