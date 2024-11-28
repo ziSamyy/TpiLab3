@@ -83,25 +83,27 @@ function crearFormulario(registrar){
      *    el input reLoginPassword se mostrará en pantalla.
      * 7- Por último se deberá capturar el formulario indentificado con la clase .formLogin y asignarlo a la variable global formulario.
      */
-    let carruselElement = document.querySelector('.carrusel');
-    carruselElement.innerHTML = '';
+    let d = document;
+    let seccionLogin = d.querySelector(".seccionLogin");
+    let carrusel = d.querySelector(".carrusel");
+    carrusel.innerHTML = "";
+    let seccionProductos = d.querySelector(".seccionProductos");
+    seccionProductos.innerHTML = "";
+    let vistaProducto = d.querySelector(".vistaProducto")
+    vistaProducto.innerHTML = "";
 
-    let seccionLoginElement = document.querySelector('.seccionLogin');
-    seccionLoginElement.innerHTML = htmlLogin;
-
-    inputEmail = document.getElementById('loginEmail');
-    inputPassword = document.getElementById('loginPassword');
-    inputRepetirPass = document.getElementById('reLoginPassword');
-
-    if (!registrar) {
-        inputRepetirPass.value = '';
-        inputRepetirPass.outerHTML = '';
+    seccionLogin.innerHTML = htmlLogin;
+    inputEmail = d.getElementById("loginEmail");
+    inputPassword = d.getElementById("loginPassword");
+    inputRepetirPass = d.getElementById("reLoginPassword");
+    if (! registrar) {
+        inputRepetirPass.outerHTML = "";
     } else {
-        inputRepetirPass.style.display = 'block';
-        document.getElementById('reLoginPasswordLabel').style.display = 'block';
+        inputRepetirPass.style.display = "block";
+        d.querySelector(".cajaLogin p").innerHTML = "Registrar Usuario";
     }
 
-    formulario = document.querySelector('.formLogin');
+    formulario = seccionLogin.querySelector(".formLogin")
 } 
 
 async function  ingresar(e){
@@ -119,73 +121,75 @@ async function  ingresar(e){
      * 5- En el caso de que el usuario no sea válido se deberá mostrar una alerta con el texto 'Email o contraseña incorrecto, intenta nuevamente'.
      */
     e.preventDefault();
-    const usuarioId = await usuarioExiste();
-    if (usuarioId) {
-        // Si el usuario es válido
-        setUsuarioAutenticado(true, usuarioId);
-        mostrarUsuario(inputEmail.value);
-        window.location.href="#"
-    } else {
-        // Si el usuario no es válido
-        mostrarMensaje('Email o contraseña incorrecto, intenta nuevamente');
-    }
+
+   let idUsuario = await usuarioExiste();
+
+   if(idUsuario) {
+    setUsuarioAutenticado(true, idUsuario);
+    mostrarUsuario(inputEmail.value);
+    window.location.href = "#" ;
+    Swal.fire({
+        title: 'Bienvenido',
+        text: 'Acabas de iniciar sesión',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+       })
+   }else {
+    Swal.fire({
+        title: 'Error',
+        text: 'Email o contraseña incorrecto, intenta nuevamente',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+       })
+   }
 }
 
 async function registrarUsuario(e) {
-    // Cancels the default behavior of the event
+    
     e.preventDefault();
 
-    // Checks if the passwords match
     if (inputPassword.value === inputRepetirPass.value) {
-        // Registers the new user in the REST-API
-        await usuariosServices.crear(
-            '', // apellido
-            '', // nombre
-            inputEmail.value, // correo
-            inputPassword.value, // password
-            '', // avatar
-            '', // pais
-            '', // ciudad
-            '', // direccion
-            ''  // telefono
-        );
-
-        // Shows a success alert
+        await usuariosServices.crear(null, null, inputEmail.value, inputPassword.value, null, null, null, null, null, "cliente");
         mostrarMensaje('Email registrado');
-
-        // Redirects to the login screen
+        console.log(localStorage.getItem(inputEmail));
         window.location.href = '#login';
     } else {
-        // Shows an error alert
         mostrarMensaje('Las contraseñas ingresadas no son iguales');
     }
 }
 async function usuarioExiste() {
-    // Get the list of users from the REST-API
-    const usuarios = await usuariosServices.listar();
+    let existeUsuario = false; 
+    let idUsuario;
 
-    // Loop through the list of users
-    for (let usuario of usuarios) {
-        // Compare the email and password entered by the user with those stored in the REST-API
-        if (usuario.correo === inputEmail.value && usuario.password === inputPassword.value) {
-            // If the email and password are valid, return the user ID
-            return usuario.id;
-        }
+    try {
+        const usuarios = await usuariosServices.listar();
+
+        usuarios.forEach(usuario => {
+            if (usuario.correo === inputEmail.value && usuario.password === inputPassword.value){
+                idUsuario = usuario.id;
+                return existeUsuario =true;
+            }
+        });
+
+    } catch (error) {
+      console.error(error);
     }
 
-    // If the email and password are not valid, return false
-    return false;
+    if (!existeUsuario) {
+      mostrarMensaje('El usuario no existe');
+      return false;
+    }
+
+    return idUsuario;
 }
 
 export function mostrarUsuario(email) {
-    // Capture the element with the class .btnLogin and assign the email text to it
     const btnLogin = document.querySelector('.btnLogin');
-    btnLogin.textContent = email;
-
-    // Capture the element with the class .btnRegister, assign the text "Logout" and set the href attribute to "#logout"
     const btnRegister = document.querySelector('.btnRegister');
+
+    btnLogin.textContent = email;
     btnRegister.textContent = 'Logout';
-    btnRegister.setAttribute('href', '#logout');
+    btnRegister.href = '#logout';
 }
 
 function mostrarMensaje(msj) {
@@ -197,22 +201,21 @@ function mostrarMensaje(msj) {
 
 export function setUsuarioAutenticado(booleano, idUsuario) {
     // Register the values in the sessionStorage
+    let email = "";
+    if (inputEmail) {
+        email = inputEmail.value;
+    }
+
     sessionStorage.setItem('autenticado', booleano);
     sessionStorage.setItem('idUsuario', idUsuario);
+    sessionStorage.setItem('email', email); 
 }
 export function getUsuarioAutenticado() {
     // Read the values stored in the sessionStorage
-    const autenticado = sessionStorage.getItem('autenticado');
-    const idUsuario = sessionStorage.getItem('idUsuario');
-    const email = sessionStorage.getItem('email');
+    var session = new Object();
+    session.autenticado = sessionStorage.getItem('autenticado') === 'true';
+    session.idUsuario = sessionStorage.getItem('idUsuario');
+    session.email = sessionStorage.getItem('email');
 
-    // Construct an object with the values
-    const usuario2 = {
-        autenticado: autenticado === 'true', // Convert to boolean
-        idUsuario: idUsuario,
-        email: email
-    };
-
-    // Return the object
-    return usuario2;
+    return session;
 }

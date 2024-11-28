@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MarketPlace</title>
+    <title>TangoByte</title>
     <link rel="icon" href="../img/plantilla/icono.png">   
     
    
@@ -15,12 +15,19 @@
     <link rel="stylesheet" href="/tienda/assets/css/login.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="../../../plugins/fontawesome-free/css/all.min.css">
-    <script type="module" src="/tienda/App/tienda.js"></script> 
-    
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module" src="/tienda/App/tienda.js"></script>
+
 </head>
+
 <body>
     <header>
-        <img src="../../../img/plantilla/logo_light.png" alt="Logo">
+        <div>
+            <a href="tienda.html">
+                <img src="../img/tangobyte-high-resolution-logo-transparent(1).png" alt="Logo"></a>
+        </div><!--  -->
         <div class="login">
             <div>
                 <i class="far fa-user"></i>
@@ -36,7 +43,7 @@
         <section class="seccionLogin">
 
         </section>
-        
+
         <section class="carrusel">
 
         </section>
@@ -44,17 +51,46 @@
         <section class="seccionProductos">
 
         </section>
-        
+
         <section class="vistaProducto">
 
         </section>
-        
+
 
     </main>
     <footer>
-        <h2>© 2024 Tpi Laboratorio III. Todos Los Derechos Reservados</h2>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>Sobre Nosotros</h4>
+                <p>© 2023 Tpi Laboratorio III. Todos los derechos reservados.</p>
+                <p>Dirección: Salta 123, Cordoba, Argentina</p>
+                <p>Teléfono: +54 9 1234 5678</p>
+                <p>Email: contacto@tpi.com</p>
+            </div>
+            <div class="footer-section">
+                <h4>Enlaces Rápidos</h4>
+                <ul>
+                    <li><a href="/contacto">Contacto</a></li>
+                    <li><a href="/faq">Preguntas Frecuentes</a></li>
+                    <li><a href="/politica-envios">Política de Envíos</a></li>
+                    <li><a href="/terminos-condiciones">Términos y Condiciones</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Suscríbete</h4>
+                <p>Recibe las últimas novedades y ofertas.</p>
+                <form action="/suscribirse" method="POST" class="subscribe-form">
+                    <input type="email" name="email" placeholder="Tu correo electrónico" required>
+                    <button type="submit">Suscribirse</button>
+                </form>
+            </div>
+        </div>
+        <script>
+            function changeImage(thumbnail) {
+                document.getElementById('mainImage').src = thumbnail.src;
+            }
 
-    </footer>
-    
+        </script>
 </body>
+
 </html>

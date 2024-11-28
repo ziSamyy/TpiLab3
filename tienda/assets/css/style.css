@@ -13,19 +13,35 @@ html{
 }
 body{
     font-size: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
 }
 header{
     display: flex;
     justify-content: space-between;
-    background-color: #ffc107;
+    background-color: rgb(64, 112, 245);
     min-height: 10vh;
     padding: 1rem;
     box-shadow: 1px 1px 10px ;
+    align-items: center;
 }
-header img{
+header a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header a .change-color {
+    scale: 1.5;
+    filter: invert();
+    -webkit-filter: invert();
+  }
+  header div img {
     padding: 1rem;
-    object-fit:contain;
-}
+    object-fit: contain;
+  }
+  
 a{
     text-decoration: none;
     font-weight:bold;
@@ -49,12 +65,113 @@ a{
     padding-left: 1.6rem;
 }
 
-footer{
-    font-family: sans-serif;
-    font-size: 0.8rem;
-    font-weight: normal;
-    margin: 0 2rem;
+footer {
+    font-family: Arial, sans-serif;
+    font-size: 1.1rem; /* Texto más grande */
+    background-color: #2b2b2b;
+    color: #fff;
     padding: 2rem;
-    border-top: 1px solid rgba(128, 128, 128, 0.5);
-}
-
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: auto; /* Hace que el footer se mantenga abajo */
+  }
+  
+  .footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .footer-section {
+    font-size: 1.3rem;
+    flex: 1 1 30%;
+    min-width: 250px;
+  }
+  
+  .footer-section h4 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: rgb(64, 112, 245);
+  }
+  
+  .footer-section p {
+    margin: 0.5rem 0;
+    line-height: 1.5;
+  }
+  
+  .footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .footer-section ul li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer-section ul li a {
+    font-size: 1.3rem;
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .footer-section ul li a:hover {
+    color: rgb(64, 112, 245);
+    text-decoration: underline;
+  }
+  
+  .subscribe-form {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  
+  .subscribe-form input {
+    flex: 1;
+    padding: 0.7rem;
+    font-size: 1.3rem;
+    border: 1px solid #555;
+    border-radius: 3px;
+  }
+  
+  .subscribe-form button {
+    padding: 0.7rem 1.2rem;
+    background-color: rgb(64, 112, 245);
+    border: none;
+    border-radius: 3px;
+    font-size: 1.5rem;
+    color: #2b2b2b;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .subscribe-form button:hover {
+    background-color: rgb(50, 87, 189);
+  }
+  
+  @media (max-width: 768px) {
+    .footer-container {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .footer-section {
+      text-align: center;
+    }
+  
+    .subscribe-form {
+      flex-direction: column;
+    }
+  
+    .subscribe-form input {
+      width: 100%;
+    }
+  
+    .subscribe-form button {
+      width: 100%;
+    }
+  }
+  

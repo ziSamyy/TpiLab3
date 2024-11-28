@@ -8,6 +8,10 @@ export function RouterTienda(){
     setSession(session); 
     let hash = location.hash;
    
+    if (hash.includes('#itemCarrousel-')) {
+        history.replaceState(null, null, ' ');
+        return; 
+    }
     if (hash === '#vistaProducto'){
         
         vistaProducto();

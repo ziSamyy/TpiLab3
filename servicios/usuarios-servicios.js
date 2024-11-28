@@ -29,9 +29,9 @@ async function crear(apellido, nombre, correo, password, avatar, pais, ciudad, d
             ciudad: ciudad,
             direccion: direccion,
             telefono:  telefono,
-            role: role
-        })
-    })
+            role: role,
+        }),
+    });
 }
 
 async function editar(id, apellido, nombre, correo, password, avatar, pais, ciudad, direccion, telefono, role="admin") {
