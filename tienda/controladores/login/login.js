@@ -22,18 +22,6 @@ const htmlLogin = `
             </div>
 
             <div class="input-group">
-
-                <input type="text" class="form-control" id="name" placeholder="Nombre" name="name" required>
-
-            </div>
-
-            <div class="input-group">
-
-                <input type="text" class="form-control" id="surname" placeholder="Apellido" name="surname" required>
-
-            </div>
-
-            <div class="input-group">
                 
                 <input type="password" class="form-control" id="reLoginPassword" placeholder="Repetir Password" name="reLoginPassword"  required>
             
@@ -108,16 +96,10 @@ function crearFormulario(registrar){
     inputEmail = d.getElementById("loginEmail");
     inputPassword = d.getElementById("loginPassword");
     inputRepetirPass = d.getElementById("reLoginPassword");
-    inputName = d.getElementById("name");
-    inputSurname = d.getElementById("surname");
     if (! registrar) {
         inputRepetirPass.outerHTML = "";
-        inputName.outerHTML = "";
-        inputSurname.outerHTML = "";
     } else {
         inputRepetirPass.style.display = "block";
-        inputName.style.display = "block";
-        inputSurname.style.display = "block";
         d.querySelector(".cajaLogin p").innerHTML = "Registrar Usuario";
     }
 
